@@ -27,8 +27,14 @@
 
 #include "cocos2d.h"
 
+USING_NS_CC;
+
 class HelloWorld : public cocos2d::Scene
 {
+private:
+    CCTMXTiledMap* _tileMap;
+    CCTMXLayer* _background;
+
 public:
     static cocos2d::Scene* createScene();
 
