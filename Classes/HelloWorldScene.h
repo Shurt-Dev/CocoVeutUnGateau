@@ -32,8 +32,8 @@ USING_NS_CC;
 class HelloWorld : public cocos2d::Scene
 {
 private:
-    CCTMXTiledMap* _tileMap;
-    CCTMXLayer* _background;
+    TMXTiledMap* _tileMap;
+    TMXLayer* _background;
 
 public:
     static cocos2d::Scene* createScene();
