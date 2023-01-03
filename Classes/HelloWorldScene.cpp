@@ -28,7 +28,8 @@
 USING_NS_CC;
 using namespace std;
 
-int mapNumber = 1; // Between 1 & 6
+int mapNumber = 1; // 1 to 6
+int backgroundNumber = 1; // 1 or 2
 
 Scene* HelloWorld::createScene()
 {
@@ -51,12 +52,17 @@ bool HelloWorld::init()
     {
         return false;
     }
+
     TMXTiledMap* _tilemap = TMXTiledMap::create("map/Map " + to_string(mapNumber) + ".tmx");
+    auto backgroundSprite = Sprite::create("map/Background "+to_string(backgroundNumber) + ".png");
+    backgroundSprite->setPosition(Vec2(480, 320));
+    _tilemap->setPosition(Vec2(30, 20));
+
+    addChild(backgroundSprite);
     addChild(_tilemap);
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    
     return true;
 }
