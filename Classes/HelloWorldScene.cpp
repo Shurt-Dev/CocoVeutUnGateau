@@ -23,8 +23,12 @@
  ****************************************************************************/
 
 #include "HelloWorldScene.h"
+#include <string>
 
 USING_NS_CC;
+using namespace std;
+
+int mapNumber = 1; // Between 1 & 6
 
 Scene* HelloWorld::createScene()
 {
@@ -47,6 +51,8 @@ bool HelloWorld::init()
     {
         return false;
     }
+    TMXTiledMap* _tilemap = TMXTiledMap::create("map/Map " + to_string(mapNumber) + ".tmx");
+    addChild(_tilemap);
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
