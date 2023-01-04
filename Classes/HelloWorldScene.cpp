@@ -54,12 +54,23 @@ bool HelloWorld::init()
     }
 
     TMXTiledMap* _tilemap = TMXTiledMap::create("map/Map " + to_string(mapNumber) + ".tmx");
-    auto backgroundSprite = Sprite::create("map/Background "+to_string(backgroundNumber) + ".png");
+    auto backgroundSprite = Sprite::create("map/Background " + to_string(backgroundNumber) + ".png");
+
     backgroundSprite->setPosition(Vec2(480, 320));
-    _tilemap->setPosition(Vec2(30, 20));
+
+    Sprite* arrow = Sprite::create("map/Arrow.png");
+    arrow->setScale(0.5);
+    arrow->setAnchorPoint(Vec2(0, 0));
+    arrow->setPosition(Vec2(60,440));
+
+    MoveTo* moveUp = MoveTo::create(1, Vec2(arrow->getPositionX(), arrow->getPositionY() + 20));
+    MoveTo* moveDown = MoveTo::create(1, Vec2(arrow->getPositionX(), arrow->getPositionY() - 20));
+    MoveTo* moveRight = MoveTo::create(1, Vec2(arrow->getPositionX() + 20, arrow->getPositionY()));
+    MoveTo* moveLeft = MoveTo::create(1, Vec2(arrow->getPositionX() - 20, arrow->getPositionY()));
 
     addChild(backgroundSprite);
     addChild(_tilemap);
+    addChild(arrow);
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
