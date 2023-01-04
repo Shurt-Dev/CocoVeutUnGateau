@@ -53,27 +53,37 @@ bool HelloWorld::init()
         return false;
     }
 
-    TMXTiledMap* _tilemap = TMXTiledMap::create("map/Map " + to_string(mapNumber) + ".tmx");
-    auto backgroundSprite = Sprite::create("map/Background " + to_string(backgroundNumber) + ".png");
-
+    _tileMap = TMXTiledMap::create("map/Map " + to_string(mapNumber) + ".tmx");
+    backgroundSprite = Sprite::create("map/Background " + to_string(backgroundNumber) + ".png");
     backgroundSprite->setPosition(Vec2(480, 320));
 
-    Sprite* arrow = Sprite::create("map/Arrow.png");
+    arrow = Sprite::create("map/Arrow.png");
     arrow->setScale(0.5);
     arrow->setAnchorPoint(Vec2(0, 0));
     arrow->setPosition(Vec2(60,440));
 
-    MoveTo* moveUp = MoveTo::create(1, Vec2(arrow->getPositionX(), arrow->getPositionY() + 20));
-    MoveTo* moveDown = MoveTo::create(1, Vec2(arrow->getPositionX(), arrow->getPositionY() - 20));
-    MoveTo* moveRight = MoveTo::create(1, Vec2(arrow->getPositionX() + 20, arrow->getPositionY()));
-    MoveTo* moveLeft = MoveTo::create(1, Vec2(arrow->getPositionX() - 20, arrow->getPositionY()));
-
     addChild(backgroundSprite);
-    addChild(_tilemap);
+    addChild(_tileMap);
     addChild(arrow);
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+    scheduleUpdate();
     return true;
+}
+
+void HelloWorld::update(float dt) {
+    MoveBy* moveUp = MoveBy::create(1, Vec2(0, 20));
+    MoveBy* moveDown = MoveBy::create(1, Vec2(0, -20));
+    MoveBy* moveRight = MoveBy::create(1, Vec2(20, 0));
+    MoveBy* moveLeft = MoveBy::create(1, Vec2(-20, 0));
+
+    DelayTime* pause = DelayTime::create(1);
+
+    Sequence* moveRightSeq = Sequence::create(moveRight, pause, nullptr);
+
+    if (_tileMap->getLayer("Calque de Tuiles 1")->getTileGIDAt(Vec2(arrow->getPositionX() / 20, arrow->getPositionY() / 20)) == 0) {
+        arrow->runAction(moveRightSeq->clone());
+    }
 }
