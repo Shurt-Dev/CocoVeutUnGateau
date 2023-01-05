@@ -23,6 +23,7 @@
  ****************************************************************************/
 
 #include "HelloWorldScene.h"
+#include <iostream>
 #include <string>
 
 USING_NS_CC;
@@ -53,12 +54,11 @@ bool HelloWorld::init()
         return false;
     }
 
-    _tileMap = TMXTiledMap::create("map/Map " + to_string(mapNumber) + ".tmx");
-    backgroundSprite = Sprite::create("map/Fond " + to_string(backgroundNumber) + ".png");
+    HelloWorld::_tileMap = TMXTiledMap::create("map/Map " + to_string(mapNumber) + ".tmx");
+    HelloWorld::backgroundSprite = Sprite::create("map/Fond " + to_string(backgroundNumber) + ".png");
     backgroundSprite->setPosition(Vec2(480, 320));
 
-    arrow = Sprite::create("map/Arrow.png");
-    arrow->setScale(0.5);
+    HelloWorld::arrow = Sprite::create("map/Arrow.png");
     arrow->setAnchorPoint(Vec2(0, 0));
     arrow->setPosition(Vec2(60,440));
 
@@ -75,6 +75,7 @@ bool HelloWorld::init()
 
 void HelloWorld::update(float dt) {
     bool right = true; // Right or Left
+
     // Moving functions
     MoveBy* moveUp = MoveBy::create(1, Vec2(0, 20));
     MoveBy* moveDown = MoveBy::create(1, Vec2(0, -20));
@@ -91,19 +92,19 @@ void HelloWorld::update(float dt) {
 
     // Moving from Right to Left to Right to Left to Right to Left to Right to Left to Right to Left...
     if (right) {
-        if (_tileMap->getLayer("Calque de Tuiles 1")->getTileGIDAt(Vec2((arrow->getPositionX() / 20) + 1, arrow->getPositionY() / 20)) == 0) {
-            arrow->runAction(moveRightSeq->clone());
+        if (_tileMap->getLayer("Calque de Tuiles 1")->getTileGIDAt(Vec2((arrow->getPositionX() + 71) / 20, arrow->getPositionY() / 20)) == 0) {
+            arrow->runAction(moveRightSeq);
             arrow->setRotation(0);
         } else {
             right = false;
         }
-    } else {
-        if (_tileMap->getLayer("Calque de Tuiles 1")->getTileGIDAt(Vec2((arrow->getPositionX() / 20) - 1, arrow->getPositionY() / 20)) == 0) {
-            arrow->runAction(moveLeftSeq->clone());
+    } else if (!false) {
+        if (_tileMap->getLayer("Calque de Tuiles 1")->getTileGIDAt(Vec2((arrow->getPositionX() - 71) / 20, arrow->getPositionY() / 20)) == 0) {
+            arrow->runAction(moveLeftSeq);
             arrow->setRotation(180);
         }
         else {
             right = true;
         }
-    }
+    }    
 }
