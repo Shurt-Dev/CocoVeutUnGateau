@@ -54,7 +54,7 @@ bool HelloWorld::init()
     }
 
     _tileMap = TMXTiledMap::create("map/Map " + to_string(mapNumber) + ".tmx");
-    backgroundSprite = Sprite::create("map/Background " + to_string(backgroundNumber) + ".png");
+    backgroundSprite = Sprite::create("map/Fond " + to_string(backgroundNumber) + ".png");
     backgroundSprite->setPosition(Vec2(480, 320));
 
     arrow = Sprite::create("map/Arrow.png");
@@ -74,16 +74,36 @@ bool HelloWorld::init()
 }
 
 void HelloWorld::update(float dt) {
+    bool right = true; // Right or Left
+    // Moving functions
     MoveBy* moveUp = MoveBy::create(1, Vec2(0, 20));
     MoveBy* moveDown = MoveBy::create(1, Vec2(0, -20));
     MoveBy* moveRight = MoveBy::create(1, Vec2(20, 0));
     MoveBy* moveLeft = MoveBy::create(1, Vec2(-20, 0));
 
-    DelayTime* pause = DelayTime::create(1);
+    DelayTime* pause = DelayTime::create(1); // Delay
 
-    Sequence* moveRightSeq = Sequence::create(moveRight, pause, nullptr);
+    // Moving sequences : Function + delay
+    Sequence* moveUpSeq = Sequence::create(moveUp, pause, nullptr); 
+    Sequence* moveDownSeq = Sequence::create(moveDown, pause, nullptr); 
+    Sequence* moveRightSeq = Sequence::create(moveRight, pause, nullptr); 
+    Sequence* moveLeftSeq = Sequence::create(moveLeft, pause, nullptr);
 
-    if (_tileMap->getLayer("Calque de Tuiles 1")->getTileGIDAt(Vec2(arrow->getPositionX() / 20, arrow->getPositionY() / 20)) == 0) {
-        arrow->runAction(moveRightSeq->clone());
+    // Moving from Right to Left to Right to Left to Right to Left to Right to Left to Right to Left...
+    if (right) {
+        if (_tileMap->getLayer("Calque de Tuiles 1")->getTileGIDAt(Vec2((arrow->getPositionX() / 20) + 1, arrow->getPositionY() / 20)) == 0) {
+            arrow->runAction(moveRightSeq->clone());
+            arrow->setRotation(0);
+        } else {
+            right = false;
+        }
+    } else {
+        if (_tileMap->getLayer("Calque de Tuiles 1")->getTileGIDAt(Vec2((arrow->getPositionX() / 20) - 1, arrow->getPositionY() / 20)) == 0) {
+            arrow->runAction(moveLeftSeq->clone());
+            arrow->setRotation(180);
+        }
+        else {
+            right = true;
+        }
     }
 }
