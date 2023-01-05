@@ -31,14 +31,16 @@ USING_NS_CC;
 
 class HelloWorld : public cocos2d::Scene
 {
-private:
+protected:
     TMXTiledMap* _tileMap;
-    TMXLayer* _background;
+    Sprite* backgroundSprite;
+    Sprite* arrow;
 
 public:
     static cocos2d::Scene* createScene();
 
     virtual bool init();
+    void update(float dt);
     
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
